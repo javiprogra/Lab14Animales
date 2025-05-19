@@ -1,57 +1,120 @@
 ﻿@page "/weather"
 @inject HttpClient Http
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@using Models;
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Animales</PageTitle>
 
-<h1>Weather</h1>
+<h1>Animales registrados</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>
+    <button class="btn btn-danger" @onclick="BorrarTodo">Borrar animales</button>
+</p>
 
-@if (forecasts == null)
+@if (aves == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>Cargando...</em></p>
 }
 else
 {
+    <h2>Aves</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Nombre</th>
+                <th>Especie.</th>
+                <th>Tipo de Alimentacion.</th>
+                <th>Tiempo de vida.</th>
+                <th>Vuela.</th>
+                <th>Periodo de incubación.</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var ave in aves)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@ave.nombre</td>
+                    <td>@ave.especie</td>
+                    <td>@ave.tipoAlimentacion</td>
+                    <td>@ave.tiempoVida</td>
+                    <td>@ave.vuela</td>
+                    <td>@ave.periodoIncubacion</td>
+                   
                 </tr>
             }
         </tbody>
     </table>
 }
 
+
+@if (serpientes == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <p></p>
+    <h2>Serpientes</h2>
+    <p></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre.</th>
+                <th>Especie.</th>
+                <th>Tipo de alimentación.</th>
+                <th>Tiempo de vida.</th>
+                <th>Venenosa.</th>
+                <th>Longitud maxima.</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var serpiente in serpientes)
+            {
+                <tr>
+                    <td>@serpiente.nombre</td>
+                    <td>@serpiente.especie</td>
+                    <td>@serpiente.tipoAlimentacion</td>
+                    <td>@serpiente.tiempoVida</td>
+                    <td>@serpiente.venenosa</td>
+                    <td>@serpiente.longitud</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
 @code {
-    private WeatherForecast[]? forecasts;
+    //Codigo para metodos y listas de los animales
+    private List<Aves> aves = new List<Aves>();
+    private List<Reptiles> serpientes = new List<Reptiles>();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        //Recuperar y validar datos
+        var savedAves = localStorage.GetItem<List<Aves>>("aves");
+        if (savedAves != null)
+        {
+            aves = savedAves;
+        }
+
+        var savedSerpientes = localStorage.GetItem<List<Reptiles>>("serpientes");
+        if (savedSerpientes != null)
+        {
+            serpientes = savedSerpientes;
+        }
     }
 
-    public class WeatherForecast
+    private async Task BorrarTodo()
     {
-        public DateOnly Date { get; set; }
+        localStorage.RemoveItem("alimentos");
+        aves = new List<Aves>();
 
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        localStorage.RemoveItem("serpientes");
+        serpientes = new List<Reptiles>();
     }
 }
