@@ -86,8 +86,6 @@ else
 }
 
 
-
-
 @code {
     //Codigo para metodos y listas de los animales
     private List<Aves> aves = new List<Aves>();
@@ -111,7 +109,7 @@ else
 
     private async Task BorrarTodo()
     {
-        localStorage.RemoveItem("alimentos");
+        localStorage.RemoveItem("aves");
         aves = new List<Aves>();
 
         localStorage.RemoveItem("serpientes");

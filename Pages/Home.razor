@@ -64,7 +64,7 @@
     </p>
 </EditForm>
 
-<EditForm Model="@serpiente" OnValidSubmit="@GuardarAve">
+<EditForm Model="@serpiente" OnValidSubmit="@GuardarSerpiente">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -75,25 +75,25 @@
                 <p>
                     <label for="identifier" class="form-label">Nombre: </label>
                     <InputText id="identifier" class="form-control" @bind-Value="serpiente.nombre" />
-                    <ValidationMessage For="() => ave.nombre" />
+                    <ValidationMessage For="() => serpiente.nombre" />
                 </p>
 
                 <p>
                     <label for="identifier" class="form-label">Tipo de Alimentacion: </label>
                     <InputText id="identifier" class="form-control" @bind-Value="serpiente.tipoAlimentacion" />
-                    <ValidationMessage For="() => ave.tipoAlimentacion" />
+                    <ValidationMessage For="() => serpiente.tipoAlimentacion" />
                 </p>
 
                 <p>
                     <label for="identifier" class="form-label">Especie: </label>
                     <InputText id="identifier" class="form-control" @bind-Value="serpiente.especie" />
-                    <ValidationMessage For="() => ave.especie" />
+                    <ValidationMessage For="() => serpiente.especie" />
                 </p>
 
                 <p>
                     <label for="identifier" class="form-label">Tiempo maximo de vida: </label>
                     <InputText id="identifier" class="form-control" @bind-Value="serpiente.tiempoVida" />
-                    <ValidationMessage For="() => ave.tiempoVida" />
+                    <ValidationMessage For="() => serpiente.tiempoVida" />
                 </p>
 
                 <p>
@@ -136,7 +136,15 @@
         // Save the data into the list
         aves.Add(ave);
         // Guardar la lista de starships en LocalStorage como JSON
-        localStorage.SetItem("animales", ave);
+        localStorage.SetItem("aves", aves);
+    }
+
+    private void GuardarSerpiente()
+    {
+        // Save the data into the list
+        serpientes.Add(serpiente);
+        // Guardar la lista de starships en LocalStorage como JSON
+        localStorage.SetItem("serpientes", serpientes);
     }
 
     protected override async Task OnInitializedAsync()
